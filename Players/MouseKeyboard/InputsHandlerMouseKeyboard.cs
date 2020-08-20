@@ -1,4 +1,5 @@
-﻿using CustomPackages.SilicomPlayer.CursorSystem;
+﻿using System;
+using CustomPackages.SilicomPlayer.CursorSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +7,9 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
 {
     public class InputsHandlerMouseKeyboard : InputsHandler
     {
+
+        public event Action<InputAction.CallbackContext> OnEscapeEvent = delegate {};
+
         [SerializeField] private InputActionReference mousePositionAction;
         [SerializeField] private InputActionReference leftClickAction;
         [SerializeField] private InputActionReference rightClickAction;
@@ -14,7 +18,6 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
         [SerializeField] private InputActionReference rotationAction;
 
         [SerializeField] private InputActionReference escapeAction;
-        [SerializeField] private QuitPanel quitPanel;
 
         [SerializeField] private float mouseSensitivity = 1;
 
@@ -99,7 +102,7 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
 
         private void OnEscape(InputAction.CallbackContext ctx)
         {
-            quitPanel.OpenPanel();
+            OnEscapeEvent?.Invoke(ctx);
         }
     
     }
