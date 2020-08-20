@@ -1,5 +1,4 @@
-﻿using CustomPackages.SilicomPlayer.CursorSystem;
-using CustomPackages.SilicomPlayer.Players;
+﻿using CustomPackages.SilicomPlayer.Players;
 using CustomPackages.SilicomPlayer.Players.MouseKeyboard;
 using UnityEngine;
 
@@ -12,31 +11,21 @@ namespace CustomPackages.SilicomPlayer.Interactions.Controllers.MouseKeyboard
 
         [SerializeField] private MouseController.MouseButton switchButton;
 
-        [SerializeField] private CursorInfo hoverCursor;
-
         public bool DisableInteraction { get; set; }
-        public void LeftClick()
+        public void LeftClick(MouseController mouseController)
         {
-            if (switchButton == MouseController.MouseButton.LeftClick)
-            {
-                PlayerController.SwitchPlayerController(playerController);
-            }
+            if (switchButton == MouseController.MouseButton.LeftClick) playerController.SwitchPlayerController();
         }
 
-        public void RightClick()
+        public void RightClick(MouseController mouseController)
         {
-            if (switchButton == MouseController.MouseButton.RightClick)
-            {
-                PlayerController.SwitchPlayerController(playerController);
-            }
+            if (switchButton == MouseController.MouseButton.RightClick) playerController.SwitchPlayerController();
         }
 
-        public void HoverEnter() { }
+        public void HoverEnter(MouseController mouseController) { }
 
-        public void HoverStay() { }
+        public void HoverStay(MouseController mouseController) { }
 
-        public void HoverExit() { }
-
-        public CursorInfo HoverCursor => hoverCursor;
+        public void HoverExit(MouseController mouseController) { }
     }
 }

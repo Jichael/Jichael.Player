@@ -1,4 +1,4 @@
-﻿using CustomPackages.SilicomPlayer.CursorSystem;
+﻿using CustomPackages.SilicomPlayer.Players.MouseKeyboard;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -55,23 +55,18 @@ namespace CustomPackages.SilicomPlayer.Interactions.Controllers.MouseKeyboard
             set => disableInteraction = value;
         }
 
-        public void LeftClick()
+        public void LeftClick(MouseController mouseController)
         {
             AddIndex(1);
             transformRotation.Rotate(rotations[_currentIndex]);
         }
 
-        public void RightClick() { }
+        public void RightClick(MouseController mouseController) { }
 
-        public void HoverEnter() { }
+        public void HoverEnter(MouseController mouseController) { }
 
-        public void HoverStay() { }
+        public void HoverStay(MouseController mouseController) { }
 
-        public void HoverExit() { }
-
-        public CursorInfo HoverCursor => hoverCursor;
-
-        [SerializeField] private CursorInfo hoverCursor;
-
+        public void HoverExit(MouseController mouseController) { }
     }
 }

@@ -1,5 +1,4 @@
-﻿using CustomPackages.SilicomPlayer.CursorSystem;
-using CustomPackages.SilicomPlayer.Interactions;
+﻿using CustomPackages.SilicomPlayer.Interactions;
 using UnityEngine;
 
 namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
@@ -7,9 +6,9 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
     public class MouseController : MonoBehaviour
     {
 
-        [SerializeField] private new Camera camera;
+        public RaycastHit Hit => _hit;
 
-        [SerializeField] private float rayLength;
+        [SerializeField] private new Camera camera;
 
         [SerializeField] private LayerMask layerMask;
 
@@ -21,7 +20,7 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
 
         private bool _isHovering;
 
-        public void RayCast(Vector2 mousePosition)
+        public void RayCast(Vector2 mousePosition, float rayLength)
         {
             _ray = camera.ScreenPointToRay(mousePosition);
 
@@ -31,13 +30,13 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
 
                 if (hitCollider == _hitCollider)
                 {
-                    if(_isHovering) _currentInteractions.HoverStay();
+                    if(_isHovering) _currentInteractions.HoverStay(this);
                 }
                 else
                 {
                     if (_isHovering)
                     {
-                        _currentInteractions.HoverExit();
+                        _currentInteractions.HoverExit(this);
                         _currentInteractions = null;
                     }
 
@@ -47,13 +46,11 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
                     {
                         _isHovering = true;
                         _currentInteractions = hitCollider.GetComponents<IMouseInteract>();
-                        _currentInteractions.HoverEnter();
-                        _currentInteractions.SetHoverCursor();
+                        _currentInteractions.HoverEnter(this);
                     }
                     else
                     {
                         _isHovering = false;
-                        CursorManager.Instance.ResetDefaultCursor();
                     }
                 }
             }
@@ -62,9 +59,8 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
                 if (_isHovering)
                 {
                     _hitCollider = null;
-                    _currentInteractions.HoverExit();
+                    _currentInteractions.HoverExit(this);
                     _currentInteractions = null;
-                    CursorManager.Instance.ResetDefaultCursor();
                 }
                 _isHovering = false;
             }
@@ -73,13 +69,13 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
         public void LeftClick()
         {
             if(!_isHovering) return;
-            _currentInteractions.LeftClick();
+            _currentInteractions.LeftClick(this);
         }
 
         public void RightClick()
         {
             if(!_isHovering) return;
-            _currentInteractions.RightClick();
+            _currentInteractions.RightClick(this);
         }
     
         public enum MouseButton

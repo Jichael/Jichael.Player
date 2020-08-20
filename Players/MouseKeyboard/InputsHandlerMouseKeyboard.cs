@@ -8,7 +8,8 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
     public class InputsHandlerMouseKeyboard : InputsHandler
     {
 
-        public event Action<InputAction.CallbackContext> OnEscapeEvent = delegate {};
+        public static event Action<InputAction.CallbackContext> OnEscapeKey = delegate {};
+        public static event Action<InputAction.CallbackContext> OnVKey = delegate {};
 
         [SerializeField] private InputActionReference mousePositionAction;
         [SerializeField] private InputActionReference leftClickAction;
@@ -18,6 +19,7 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
         [SerializeField] private InputActionReference rotationAction;
 
         [SerializeField] private InputActionReference escapeAction;
+        [SerializeField] private InputActionReference vAction;
 
         [SerializeField] private float mouseSensitivity = 1;
 
@@ -37,8 +39,12 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
             leftClickAction.action.performed += OnLeftClick;
             rightClickAction.action.Enable();
             rightClickAction.action.performed += OnRightClick;
+            
+            // Events
             escapeAction.action.Enable();
             escapeAction.action.performed += OnEscape;
+            vAction.action.Enable();
+            vAction.action.performed += OnV;
         }
 
         private void OnDisable()
@@ -51,8 +57,12 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
             leftClickAction.action.Disable();
             rightClickAction.action.performed -= OnRightClick;
             rightClickAction.action.Disable();
+            
+            
             escapeAction.action.Disable();
             escapeAction.action.performed -= OnEscape;
+            vAction.action.Disable();
+            vAction.action.performed -= OnV;
         }
 
         private void Update()
@@ -73,7 +83,7 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
                 // TODO : wait for a fix in new input system :
                 // when we lock the cursor, the mousePosition is only updated after the first next event 
                 // -> not moving the mouse makes that the raycast is made from the previous unlock mouse position
-                mouseController.RayCast(_mousePosition);
+                mouseController.RayCast(_mousePosition, PlayerController.Current.settings.raycastLength);
             }
 
         }
@@ -102,7 +112,12 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
 
         private void OnEscape(InputAction.CallbackContext ctx)
         {
-            OnEscapeEvent?.Invoke(ctx);
+            OnEscapeKey?.Invoke(ctx);
+        }
+        
+        private void OnV(InputAction.CallbackContext ctx)
+        {
+            OnVKey?.Invoke(ctx);
         }
     
     }

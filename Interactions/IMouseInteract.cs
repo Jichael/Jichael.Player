@@ -1,76 +1,60 @@
-﻿using CustomPackages.SilicomPlayer.CursorSystem;
+﻿using CustomPackages.SilicomPlayer.Players.MouseKeyboard;
 
 namespace CustomPackages.SilicomPlayer.Interactions
 {
     public interface IMouseInteract : IBaseInteract
     {
-        void LeftClick();
-        void RightClick();
-        void HoverEnter();
-        void HoverStay();
-        void HoverExit();
-    
-        CursorInfo HoverCursor { get; }
+        void LeftClick(MouseController mouseController);
+        void RightClick(MouseController mouseController);
+        void HoverEnter(MouseController mouseController);
+        void HoverStay(MouseController mouseController);
+        void HoverExit(MouseController mouseController);
     }
 
     public static class IMouseInteractExtensions
     {
-        public static void LeftClick(this IMouseInteract[] mouseInteractions)
+        public static void LeftClick(this IMouseInteract[] mouseInteractions, MouseController mouseController)
         {
             for (int i = 0; i < mouseInteractions.Length; i++)
             {
                 if(mouseInteractions[i].DisableInteraction) continue;
-                mouseInteractions[i].LeftClick();
+                mouseInteractions[i].LeftClick(mouseController);
             }
         }
     
-        public static void RightClick(this IMouseInteract[] mouseInteractions)
+        public static void RightClick(this IMouseInteract[] mouseInteractions, MouseController mouseController)
         {
             for (int i = 0; i < mouseInteractions.Length; i++)
             {
                 if(mouseInteractions[i].DisableInteraction) continue;
-                mouseInteractions[i].RightClick();
+                mouseInteractions[i].RightClick(mouseController);
             }
         }
     
-        public static void HoverEnter(this IMouseInteract[] mouseInteractions)
+        public static void HoverEnter(this IMouseInteract[] mouseInteractions, MouseController mouseController)
         {
             for (int i = 0; i < mouseInteractions.Length; i++)
             {
                 if(mouseInteractions[i].DisableInteraction) continue;
-                mouseInteractions[i].HoverEnter();
+                mouseInteractions[i].HoverEnter(mouseController);
             }
         }
     
-        public static void HoverStay(this IMouseInteract[] mouseInteractions)
+        public static void HoverStay(this IMouseInteract[] mouseInteractions, MouseController mouseController)
         {
             for (int i = 0; i < mouseInteractions.Length; i++)
             {
                 if(mouseInteractions[i].DisableInteraction) continue;
-                mouseInteractions[i].HoverStay();
+                mouseInteractions[i].HoverStay(mouseController);
             }
         }
     
-        public static void HoverExit(this IMouseInteract[] mouseInteractions)
+        public static void HoverExit(this IMouseInteract[] mouseInteractions, MouseController mouseController)
         {
             for (int i = 0; i < mouseInteractions.Length; i++)
             {
                 if(mouseInteractions[i].DisableInteraction) continue;
-                mouseInteractions[i].HoverExit();
-            }
-        }
-
-        // TODO : Jerome : comment on gere ca ? premier, dernier, autre ?
-        // add a bool SwapCursor on interactions and check for it ?
-        public static void SetHoverCursor(this IMouseInteract[] mouseInteractions)
-        {
-            if (mouseInteractions == null || mouseInteractions.Length == 0)
-            {
-                CursorManager.Instance.ResetDefaultCursor();
-            }
-            else
-            {
-                CursorManager.Instance.SetCursor(mouseInteractions[0].HoverCursor);
+                mouseInteractions[i].HoverExit(mouseController);
             }
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace CustomPackages.SilicomPlayer.CursorSystem
 {
-    public class ChangeCursorOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class ChangeCursorOnHoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
 
         [SerializeField] private CursorInfo hoverCursor;

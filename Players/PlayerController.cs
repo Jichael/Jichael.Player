@@ -18,7 +18,7 @@ namespace CustomPackages.SilicomPlayer.Players
 
         [SerializeField] private bool isDefaultPlayerInScene;
 
-        [SerializeField] private PlayerControllerSettings settings;
+        public PlayerControllerSettings settings;
 
         [SerializeField] private UnityEvent onPlayerEnter;
         [SerializeField] private UnityEvent onPlayerExit;
@@ -77,7 +77,7 @@ namespace CustomPackages.SilicomPlayer.Players
                     Debug.LogError("There is multiple PlayerController set as default. This is not allowed and will produce unexpected results.", this);
                 }
 #endif
-                SwitchPlayerController(this);
+                SwitchPlayerController();
             }
             else
             {
@@ -151,21 +151,23 @@ namespace CustomPackages.SilicomPlayer.Players
 
         }
 
-        public static void SwitchPlayerController(PlayerController playerController)
+        public void Teleport(Vector3 destination)
+        {
+            characterController.enabled = false;
+            _transform.position = destination;
+            characterController.enabled = true;
+        }
+
+        public void SwitchPlayerController()
         {
             if (Current != null)
             {
                 Current.ExitPlayer();
             }
 
-            Current = playerController;
+            Current = this;
         
             Current.EnterPlayer();
-        }
-
-        public void SwitchPlayerController()
-        {
-            SwitchPlayerController(this);
         }
 
         public void LockMovement()
@@ -256,6 +258,8 @@ namespace CustomPackages.SilicomPlayer.Players
         public float rotationSpeedMultiplier = 1;
 
         public bool lockedCursor;
+
+        public float raycastLength = 2;
     }
 
     public class Bounds
