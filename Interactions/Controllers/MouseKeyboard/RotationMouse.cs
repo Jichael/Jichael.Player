@@ -49,11 +49,7 @@ namespace CustomPackages.SilicomPlayer.Interactions.Controllers.MouseKeyboard
 
         [SerializeField] private bool disableInteraction;
 
-        public bool DisableInteraction
-        {
-            get => disableInteraction;
-            set => disableInteraction = value;
-        }
+        public bool DisableInteraction => disableInteraction;
 
         public void LeftClick(MouseController mouseController)
         {

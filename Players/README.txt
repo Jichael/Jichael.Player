@@ -14,13 +14,14 @@ Il est composé de :
 		- RotationSpeedMultiplier : valeur de multiplication pour la vitesse de rotation
 		- LockedCursor : bloque ou non le curseur lorsqu'on passe dans ce player
 		- Deux listes d'event OnPlayerEnter/OnPlayerExit qui sont appelées lorsqu'on rentre/sort de ce player
+		- RaycastLength : Longueur en mètres du "laser" pour intéragir avec les objets
 		- LockMovement : Bloque les déplacements de ce player
 		- LockRotation : Bloque la rotation de ce player
 		- LockInteractions : Bloque les intéractions de ce player
 		
 	- Un CharacterController qui est utilisé pour gérer la physique
 	
-	- Une caméra virtuelle
+	- Une caméra virtuelle Cinemachine
 
 
 Un player se déplace selon les axes LOCAUX suivants :

@@ -2,6 +2,6 @@
 {
     public interface IBaseInteract
     {
-        bool DisableInteraction { get; set; }
+        bool DisableInteraction { get; }
     }
 }
