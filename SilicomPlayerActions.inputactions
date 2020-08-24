@@ -14,6 +14,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "ThirdAxisMovement",
+                    "type": "Value",
+                    "id": "dfeb2a04-af32-4529-8622-43966cab58bb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Rotation",
                     "type": "Value",
                     "id": "2719a633-2493-41dc-b6c3-48430b11f0b0",
@@ -183,6 +191,50 @@
                     "action": "V",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a1f0b939-da79-404d-bb54-36ebde601299",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "Clamp(min=-1,max=1)",
+                    "groups": "",
+                    "action": "ThirdAxisMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "PM",
+                    "id": "7921abd3-992b-4e1b-83b7-e87b762bb5b1",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThirdAxisMovement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "316ec193-3873-4069-aed1-0ac7784f2931",
+                    "path": "<Keyboard>/semicolon",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThirdAxisMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "1f56f41e-daab-44ba-a9dd-d9724c970166",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThirdAxisMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

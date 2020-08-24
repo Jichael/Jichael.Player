@@ -16,6 +16,7 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
         [SerializeField] private InputActionReference rightClickAction;
     
         [SerializeField] private InputActionReference movementAction;
+        [SerializeField] private InputActionReference thirdAxisMovementAction;
         [SerializeField] private InputActionReference rotationAction;
 
         [SerializeField] private InputActionReference escapeAction;
@@ -27,6 +28,8 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
 
         private Vector2 _mousePosition;
         private Vector2 _movementInput;
+        private float _thirdAxisMovement;
+        private Vector3 _movement;
         private Vector2 _rotationInput;
 
         private void OnEnable()
@@ -34,6 +37,7 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
             Current = this;
             mousePositionAction.action.Enable();
             movementAction.action.Enable();
+            thirdAxisMovementAction.action.Enable();
             rotationAction.action.Enable();
             leftClickAction.action.Enable();
             leftClickAction.action.performed += OnLeftClick;
@@ -52,6 +56,7 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
             Current = null;
             mousePositionAction.action.Disable();
             movementAction.action.Disable();
+            thirdAxisMovementAction.action.Disable();
             rotationAction.action.Disable();
             leftClickAction.action.performed -= OnLeftClick;
             leftClickAction.action.Disable();
@@ -68,14 +73,20 @@ namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
         private void Update()
         {
             _mousePosition = mousePositionAction.action.ReadValue<Vector2>();
-            _movementInput = movementAction.action.ReadValue<Vector2>();
-            _rotationInput = rotationAction.action.ReadValue<Vector2>() * mouseSensitivity;
 
             CursorManager.Instance.SetCursorPosition(_mousePosition);
 
             if (!PlayerController.Current) return;
-        
-            PlayerController.Current.Move(_movementInput * Time.deltaTime);
+            
+            _movementInput = movementAction.action.ReadValue<Vector2>();
+            _thirdAxisMovement = -thirdAxisMovementAction.action.ReadValue<float>();
+            
+            _rotationInput = rotationAction.action.ReadValue<Vector2>() * mouseSensitivity;
+
+            _movement = _movementInput;
+            _movement.z = _thirdAxisMovement;
+            
+            PlayerController.Current.Move(_movement * Time.deltaTime);
             PlayerController.Current.Rotate(_rotationInput);
 
             if (!PlayerController.Current.LockedInteractions)

@@ -87,12 +87,17 @@ namespace CustomPackages.SilicomPlayer.Players
         }
 
 
-        public void Move(Vector2 movementVector)
+        public void Move(Vector3 movementVector)
         {
             if (LockedMovement) return;
 
             _movement = settings.movementSpeedMultiplier * movementVector.y * _transform.forward +
                         settings.movementSpeedMultiplier * movementVector.x * _transform.right;
+
+            if (settings.allowThirdAxisMovement)
+            {
+                _movement += settings.movementSpeedMultiplier * movementVector.z * _transform.up;
+            }
 
             _movement += settings.gravity * Time.deltaTime;
 
@@ -160,6 +165,8 @@ namespace CustomPackages.SilicomPlayer.Players
 
         public void SwitchPlayerController()
         {
+            if(Current == this) return;
+            
             if (Current != null)
             {
                 Current.ExitPlayer();
@@ -244,6 +251,8 @@ namespace CustomPackages.SilicomPlayer.Players
         [ShowIf("clampRotationY")] public float maxRotationY;
 
         public Vector3 gravity;
+
+        public bool allowThirdAxisMovement;
 
         public bool limitMovementX;
         [ShowIf("limitMovementX")] public Vector2 xAxisBounds;
