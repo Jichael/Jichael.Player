@@ -1,8 +1,10 @@
-﻿using CustomPackages.SilicomPlayer.Players.MouseKeyboard;
+﻿using CustomPackages.Silicom.Player.Players.MouseKeyboard;
 using UnityEngine;
 
-namespace CustomPackages.SilicomPlayer.Interactions.Controllers.MouseKeyboard
+namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
 {
+    
+    [RequireComponent(typeof(ChangeCursorOnMouseHover))]
     public class OutlineOnMouseHover : MonoBehaviour, IMouseInteract
     {
         [SerializeField] private Outline outline;

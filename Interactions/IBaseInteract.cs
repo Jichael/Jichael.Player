@@ -1,4 +1,4 @@
-﻿namespace CustomPackages.SilicomPlayer.Interactions
+﻿namespace CustomPackages.Silicom.Player.Interactions
 {
     public interface IBaseInteract
     {

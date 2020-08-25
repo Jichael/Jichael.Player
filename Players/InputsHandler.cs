@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CustomPackages.SilicomPlayer.Players
+namespace CustomPackages.Silicom.Player.Players
 {
     public class InputsHandler : MonoBehaviour
     {

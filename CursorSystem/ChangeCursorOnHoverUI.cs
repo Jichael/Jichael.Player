@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CustomPackages.SilicomPlayer.CursorSystem
+namespace CustomPackages.Silicom.Player.CursorSystem
 {
     public class ChangeCursorOnHoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

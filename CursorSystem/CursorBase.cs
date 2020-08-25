@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace CustomPackages.SilicomPlayer.CursorSystem
+namespace CustomPackages.Silicom.Player.CursorSystem
 {
     public class CursorBase : MonoBehaviour
     {

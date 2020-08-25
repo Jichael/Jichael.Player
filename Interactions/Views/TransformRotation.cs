@@ -3,7 +3,7 @@ using Jichaels.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace CustomPackages.SilicomPlayer.Interactions.Views
+namespace CustomPackages.Silicom.Player.Interactions.Views
 {
     public class TransformRotation : MonoBehaviour
     {

@@ -1,26 +1,28 @@
-﻿using CustomPackages.SilicomPlayer.CursorSystem;
-using CustomPackages.SilicomPlayer.Interactions;
-using CustomPackages.SilicomPlayer.Players.MouseKeyboard;
+﻿using CustomPackages.Silicom.Player.CursorSystem;
+using CustomPackages.Silicom.Player.Players.MouseKeyboard;
 using UnityEngine;
 
-public class ChangeCursorOnMouseHover : MonoBehaviour, IMouseInteract
+namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
 {
-    [SerializeField] private CursorInfo cursor;
+    public class ChangeCursorOnMouseHover : MonoBehaviour, IMouseInteract
+    {
+        [SerializeField] private CursorInfo cursor;
 
-    public bool DisableInteraction { get; set; }
-    public void LeftClick(MouseController mouseController) { }
+        public bool DisableInteraction { get; set; }
+        public void LeftClick(MouseController mouseController) { }
 
-    public void RightClick(MouseController mouseController) { }
+        public void RightClick(MouseController mouseController) { }
     
-    public void HoverEnter(MouseController mouseController)
-    {
-        CursorManager.Instance.SetCursor(cursor);
-    }
+        public void HoverEnter(MouseController mouseController)
+        {
+            CursorManager.Instance.SetCursor(cursor);
+        }
 
-    public void HoverStay(MouseController mouseController) { }
+        public void HoverStay(MouseController mouseController) { }
 
-    public void HoverExit(MouseController mouseController)
-    {
-        CursorManager.Instance.ResetDefaultCursor();
+        public void HoverExit(MouseController mouseController)
+        {
+            CursorManager.Instance.ResetDefaultCursor();
+        }
     }
 }

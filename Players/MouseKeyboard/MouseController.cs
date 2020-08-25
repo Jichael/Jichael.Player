@@ -1,7 +1,7 @@
-﻿using CustomPackages.SilicomPlayer.Interactions;
+﻿using CustomPackages.Silicom.Player.Interactions;
 using UnityEngine;
 
-namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
+namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 {
     public class MouseController : MonoBehaviour
     {

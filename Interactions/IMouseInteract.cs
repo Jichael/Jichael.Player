@@ -1,6 +1,6 @@
-﻿using CustomPackages.SilicomPlayer.Players.MouseKeyboard;
+﻿using CustomPackages.Silicom.Player.Players.MouseKeyboard;
 
-namespace CustomPackages.SilicomPlayer.Interactions
+namespace CustomPackages.Silicom.Player.Interactions
 {
     public interface IMouseInteract : IBaseInteract
     {

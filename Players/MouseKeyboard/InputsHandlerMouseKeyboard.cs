@@ -1,9 +1,9 @@
 ﻿using System;
-using CustomPackages.SilicomPlayer.CursorSystem;
+using CustomPackages.Silicom.Player.CursorSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace CustomPackages.SilicomPlayer.Players.MouseKeyboard
+namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 {
     public class InputsHandlerMouseKeyboard : InputsHandler
     {

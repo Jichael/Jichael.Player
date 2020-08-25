@@ -1,11 +1,11 @@
 ﻿using System;
 using Cinemachine;
-using CustomPackages.SilicomPlayer.CursorSystem;
+using CustomPackages.Silicom.Player.CursorSystem;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace CustomPackages.SilicomPlayer.Players
+namespace CustomPackages.Silicom.Player.Players
 {
     public class PlayerController : MonoBehaviour
     {

@@ -1,9 +1,11 @@
-﻿using CustomPackages.SilicomPlayer.Players;
-using CustomPackages.SilicomPlayer.Players.MouseKeyboard;
+﻿using CustomPackages.Silicom.Player.Players;
+using CustomPackages.Silicom.Player.Players.MouseKeyboard;
 using UnityEngine;
 
-namespace CustomPackages.SilicomPlayer.Interactions.Controllers.MouseKeyboard
+namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
 {
+    
+    [RequireComponent(typeof(ChangeCursorOnMouseHover))]
     public class SwitchPlayerControllerMouse : MonoBehaviour, IMouseInteract
     {
 

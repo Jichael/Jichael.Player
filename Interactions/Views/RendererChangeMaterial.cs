@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CustomPackages.SilicomPlayer.Interactions.Views
+namespace CustomPackages.Silicom.Player.Interactions.Views
 {
     public class RendererChangeMaterial : MonoBehaviour
     {
