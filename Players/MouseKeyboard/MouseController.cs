@@ -10,8 +10,6 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 
         [SerializeField] private new Camera camera;
 
-        [SerializeField] private LayerMask layerMask;
-
         private Ray _ray;
         private RaycastHit _hit;
 
@@ -24,7 +22,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         {
             _ray = camera.ScreenPointToRay(mousePosition);
 
-            if (Physics.Raycast(_ray, out _hit, rayLength, layerMask))
+            if (Physics.Raycast(_ray, out _hit, rayLength))
             {
                 Collider hitCollider = _hit.collider;
 
@@ -78,10 +76,13 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             _currentInteractions.RightClick(this);
         }
     
-        public enum MouseButton
+        public enum MouseEvent
         {
             LeftClick,
-            RightClick
+            RightClick,
+            HoverEnter,
+            HoverStay,
+            HoverExit
         }
     
     }

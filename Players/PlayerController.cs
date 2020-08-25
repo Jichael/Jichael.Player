@@ -96,7 +96,7 @@ namespace CustomPackages.Silicom.Player.Players
 
             if (settings.allowThirdAxisMovement)
             {
-                _movement += settings.movementSpeedMultiplier * movementVector.z * _transform.up;
+                _movement += settings.thirdAxisSpeedMultiplier * movementVector.z * _transform.up;
             }
 
             _movement += settings.gravity * Time.deltaTime;
@@ -253,6 +253,7 @@ namespace CustomPackages.Silicom.Player.Players
         public Vector3 gravity;
 
         public bool allowThirdAxisMovement;
+        [ShowIf("allowThirdAxisMovement")] public float thirdAxisSpeedMultiplier = 1;
 
         public bool limitMovementX;
         [ShowIf("limitMovementX")] public Vector2 xAxisBounds;

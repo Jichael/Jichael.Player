@@ -1,6 +1,7 @@
 ﻿using CustomPackages.Silicom.Player.Players;
 using CustomPackages.Silicom.Player.Players.MouseKeyboard;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
 {
@@ -11,17 +12,17 @@ namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
 
         [SerializeField] private PlayerController playerController;
 
-        [SerializeField] private MouseController.MouseButton switchButton;
+        [FormerlySerializedAs("switchButton")] [SerializeField] private MouseController.MouseEvent switchEvent;
 
         public bool DisableInteraction { get; set; }
         public void LeftClick(MouseController mouseController)
         {
-            if (switchButton == MouseController.MouseButton.LeftClick) playerController.SwitchPlayerController();
+            if (switchEvent == MouseController.MouseEvent.LeftClick) playerController.SwitchPlayerController();
         }
 
         public void RightClick(MouseController mouseController)
         {
-            if (switchButton == MouseController.MouseButton.RightClick) playerController.SwitchPlayerController();
+            if (switchEvent == MouseController.MouseEvent.RightClick) playerController.SwitchPlayerController();
         }
 
         public void HoverEnter(MouseController mouseController) { }
