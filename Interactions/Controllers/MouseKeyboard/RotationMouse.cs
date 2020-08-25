@@ -1,4 +1,5 @@
-﻿using CustomPackages.Silicom.Player.Players.MouseKeyboard;
+﻿using CustomPackages.Silicom.Player.Interactions.Views;
+using CustomPackages.Silicom.Player.Players.MouseKeyboard;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
     [RequireComponent(typeof(ChangeCursorOnMouseHover))]
     public class RotationMouse : MonoBehaviour, IMouseInteract
     {
-        [SerializeField] private Views.TransformRotation transformRotation;    
+        [SerializeField] private TransformRotation transformRotation;    
     
         [SerializeField] private Vector3[] rotations;
     
