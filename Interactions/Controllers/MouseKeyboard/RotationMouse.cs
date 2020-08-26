@@ -1,5 +1,4 @@
-﻿using CustomPackages.Silicom.Player.Interactions.Views;
-using CustomPackages.Silicom.Player.Players.MouseKeyboard;
+﻿using CustomPackages.Silicom.Player.Players.MouseKeyboard;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
