@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Cinemachine;
 using CustomPackages.Silicom.Player.CursorSystem;
 using Sirenix.OdinInspector;
@@ -20,9 +21,20 @@ namespace CustomPackages.Silicom.Player.Players
 
         public PlayerControllerSettings settings;
 
-        [SerializeField] private UnityEvent onPlayerEnter;
-        [SerializeField] private UnityEvent onPlayerExit;
-
+        [Serializable]
+        private class DelayedEvents
+        {
+            public UnityEvent events;
+            public float delay;
+            public IEnumerator Invoke()
+            {
+                yield return new WaitForSeconds(delay);
+                events.Invoke();
+            }
+        }
+        [SerializeField] private DelayedEvents[] onPlayerEnterEvents;
+        [SerializeField] private DelayedEvents[] onPlayerExitEvents;
+        
         [SerializeField] private bool lockedMovement;
         [SerializeField] private bool lockedRotation;
         [SerializeField] private bool lockedInteractions;
@@ -228,7 +240,17 @@ namespace CustomPackages.Silicom.Player.Players
         private void EnterPlayer()
         {
             characterController.enabled = true;
-            onPlayerEnter.Invoke();
+            for (int i = 0; i < onPlayerEnterEvents.Length; i++)
+            {
+                if(Mathf.Approximately(onPlayerEnterEvents[i].delay, 0))
+                {
+                    onPlayerEnterEvents[i].events.Invoke();
+                }
+                else
+                {
+                    StartCoroutine(onPlayerEnterEvents[i].Invoke());
+                }
+            }
             virtualCamera.Priority = 11;
             CursorManager.Instance.SetLockState(settings.lockedCursor);
         }
@@ -236,8 +258,18 @@ namespace CustomPackages.Silicom.Player.Players
         private void ExitPlayer()
         {
             characterController.enabled = false;
-            onPlayerExit.Invoke();
-            virtualCamera.Priority = 10;
+            for (int i = 0; i < onPlayerExitEvents.Length; i++)
+            {
+                if(Mathf.Approximately(onPlayerExitEvents[i].delay, 0))
+                {
+                    onPlayerExitEvents[i].events.Invoke();
+                }
+                else
+                {
+                    StartCoroutine(onPlayerExitEvents[i].Invoke());
+                }
+            }
+            virtualCamera.Priority = 9;
         }
 
     }
