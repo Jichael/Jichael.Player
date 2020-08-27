@@ -69,6 +69,15 @@ namespace CustomPackages.Silicom.Player.Players
             _prevLockRotation = LockedRotation;
             _prevLockInteractions = LockedInteractions;
 
+            if (!isDefaultPlayerInScene)
+            {
+                virtualCamera.Priority = 10;
+                characterController.enabled = false;
+            }
+        }
+
+        private void Start()
+        {
             if (isDefaultPlayerInScene)
             {
 #if UNITY_EDITOR
@@ -78,11 +87,6 @@ namespace CustomPackages.Silicom.Player.Players
                 }
 #endif
                 SwitchPlayerController();
-            }
-            else
-            {
-                virtualCamera.Priority = 10;
-                characterController.enabled = false;
             }
         }
 
