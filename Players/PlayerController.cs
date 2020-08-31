@@ -55,6 +55,9 @@ namespace CustomPackages.Silicom.Player.Players
 
         private Bounds _bounds;
 
+        private Vector3 _defaultRotation;
+        private Vector3 _defaultPosition;
+
         private void Awake()
         {
             _transform = transform;
@@ -62,6 +65,9 @@ namespace CustomPackages.Silicom.Player.Players
 
             _currentBodyRotation = _transform.localEulerAngles;
             _currentCameraRotation = _cameraTransform.localEulerAngles;
+
+            _defaultPosition = _transform.position;
+            _defaultRotation = _transform.eulerAngles;
 
             if (settings.limitMovementX || settings.limitMovementY || settings.limitMovementZ)
             {
@@ -201,10 +207,10 @@ namespace CustomPackages.Silicom.Player.Players
             LockedMovement = true;
         }
 
-        public void UnlockMovement()
+        public void UnlockMovement(bool forceUnlock = false)
         {
             if (!LockedMovement) return;
-            LockedMovement = _prevLockMovement;
+            LockedMovement = forceUnlock ? false : _prevLockMovement;
         }
         
         public void LockRotation()
@@ -215,11 +221,11 @@ namespace CustomPackages.Silicom.Player.Players
             LockedRotation = true;
         }
 
-        public void UnlockRotation()
+        public void UnlockRotation(bool forceUnlock = false)
         {
             if (!LockedRotation) return;
             
-            LockedRotation = _prevLockRotation;
+            LockedRotation = forceUnlock ? false : _prevLockRotation;
         }
         
         public void LockInteractions()
@@ -230,11 +236,11 @@ namespace CustomPackages.Silicom.Player.Players
             LockedInteractions = true;
         }
 
-        public void UnlockInteractions()
+        public void UnlockInteractions(bool forceUnlock = false)
         {
             if (!LockedInteractions) return;
             
-            LockedInteractions = _prevLockInteractions;
+            LockedInteractions = forceUnlock ? false : _prevLockInteractions;
         }
 
         private void EnterPlayer()
@@ -270,6 +276,17 @@ namespace CustomPackages.Silicom.Player.Players
                 }
             }
             virtualCamera.Priority = 9;
+        }
+
+        public void ResetPosition()
+        {
+            _transform.position = _defaultPosition;
+        }
+
+        public void ResetRotation()
+        {
+            _currentBodyRotation.y = _defaultRotation.y;
+            _currentCameraRotation.x = _defaultRotation.x;
         }
 
     }
