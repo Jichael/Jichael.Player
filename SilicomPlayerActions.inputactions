@@ -68,6 +68,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ShiftY",
+                    "type": "Button",
+                    "id": "50a4e1af-a092-4e5e-86fd-5ceae78fe710",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -197,7 +205,7 @@
                     "id": "a1f0b939-da79-404d-bb54-36ebde601299",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
-                    "processors": "Clamp(min=-1,max=1)",
+                    "processors": "Clamp(min=-2,max=2)",
                     "groups": "",
                     "action": "ThirdAxisMovement",
                     "isComposite": false,
@@ -233,6 +241,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "ThirdAxisMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "ShiftY",
+                    "id": "aa8ff6e0-c3f4-4be4-81fc-9abd8a19c452",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShiftY",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "b8ed77b2-f613-4e26-92cf-026bfd30be4f",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "ShiftY",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "140ecc84-1b6b-4db3-9510-5baf1a30a1c0",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "ShiftY",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

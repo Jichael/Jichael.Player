@@ -58,6 +58,10 @@ namespace CustomPackages.Silicom.Player.Players
         private Vector3 _defaultRotation;
         private Vector3 _defaultPosition;
 
+        public bool CanSwitch => _switchDelay < Time.time;
+        private float _switchDelay = -1;
+        private const float SWITCH_DELAY = 1;
+
         private void Awake()
         {
             _transform = transform;
@@ -187,7 +191,9 @@ namespace CustomPackages.Silicom.Player.Players
 
         public void SwitchPlayerController()
         {
-            if(Current == this) return;
+            if(Current == this || !CanSwitch) return;
+
+            _switchDelay = Time.time + SWITCH_DELAY;
             
             if (Current != null)
             {

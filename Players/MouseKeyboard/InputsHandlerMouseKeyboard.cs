@@ -10,6 +10,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 
         public static event Action<InputAction.CallbackContext> OnEscapeKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnVKey = delegate {};
+        public static event Action<InputAction.CallbackContext> OnShiftYKey = delegate {};
 
         [SerializeField] private InputActionReference mousePositionAction;
         [SerializeField] private InputActionReference leftClickAction;
@@ -21,6 +22,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 
         [SerializeField] private InputActionReference escapeAction;
         [SerializeField] private InputActionReference vAction;
+        [SerializeField] private InputActionReference shiftYAction;
 
         [SerializeField] private float mouseSensitivity = 1;
 
@@ -49,6 +51,8 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             escapeAction.action.performed += OnEscape;
             vAction.action.Enable();
             vAction.action.performed += OnV;
+            shiftYAction.action.Enable();
+            shiftYAction.action.performed += OnShiftY;
         }
 
         private void OnDisable()
@@ -68,6 +72,8 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             escapeAction.action.performed -= OnEscape;
             vAction.action.Disable();
             vAction.action.performed -= OnV;
+            shiftYAction.action.Disable();
+            shiftYAction.action.performed -= OnShiftY;
         }
 
         private void Update()
@@ -129,6 +135,11 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         private void OnV(InputAction.CallbackContext ctx)
         {
             OnVKey?.Invoke(ctx);
+        }
+
+        private void OnShiftY(InputAction.CallbackContext ctx)
+        {
+            OnShiftYKey?.Invoke(ctx);
         }
     
     }

@@ -10,6 +10,7 @@ namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
     {
         [FormerlySerializedAs("mouseButton")] [SerializeField] private MouseController.MouseEvent mouseEvent;
 
+        // Array of events in case we wan't to have ordered events (UnityEvents order is not defined)
         [SerializeField] private UnityEvent[] events;
 
         [SerializeField] private bool disableInteractions;

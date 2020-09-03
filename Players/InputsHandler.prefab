@@ -84,6 +84,7 @@ MonoBehaviour:
   rotationAction: {fileID: 711071328281916885, guid: bae0012292732094da263331982d0036, type: 3}
   escapeAction: {fileID: -7261099070203112555, guid: bae0012292732094da263331982d0036, type: 3}
   vAction: {fileID: 9147249247584267593, guid: bae0012292732094da263331982d0036, type: 3}
+  shiftYAction: {fileID: -7930992067341355747, guid: bae0012292732094da263331982d0036, type: 3}
   mouseSensitivity: 0.2
   mouseController: {fileID: 4095686572521479053}
 --- !u!114 &4095686572521479053
@@ -99,9 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!1001 &4095686570948021253
 PrefabInstance:
   m_ObjectHideFlags: 0
