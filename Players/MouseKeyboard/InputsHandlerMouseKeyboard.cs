@@ -11,6 +11,10 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         public static event Action<InputAction.CallbackContext> OnEscapeKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnVKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnShiftYKey = delegate {};
+        public static event Action<InputAction.CallbackContext> OnRKey = delegate {};
+        public static event Action<InputAction.CallbackContext> OnTKey = delegate {};
+        public static event Action<InputAction.CallbackContext> OnPKey = delegate {};
+        public static event Action<InputAction.CallbackContext> OnMKey = delegate {};
 
         [SerializeField] private InputActionReference mousePositionAction;
         [SerializeField] private InputActionReference leftClickAction;
@@ -23,6 +27,10 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         [SerializeField] private InputActionReference escapeAction;
         [SerializeField] private InputActionReference vAction;
         [SerializeField] private InputActionReference shiftYAction;
+        [SerializeField] private InputActionReference rAction;
+        [SerializeField] private InputActionReference tAction;
+        [SerializeField] private InputActionReference pAction;
+        [SerializeField] private InputActionReference mAction;
 
         [SerializeField] private float mouseSensitivity = 1;
 
@@ -53,6 +61,14 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             vAction.action.performed += OnV;
             shiftYAction.action.Enable();
             shiftYAction.action.performed += OnShiftY;
+            rAction.action.Enable();
+            rAction.action.performed += OnR;
+            tAction.action.Enable();
+            tAction.action.performed += OnT;
+            pAction.action.Enable();
+            pAction.action.performed += OnP;
+            mAction.action.Enable();
+            mAction.action.performed += OnM;
         }
 
         private void OnDisable()
@@ -74,13 +90,27 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             vAction.action.performed -= OnV;
             shiftYAction.action.Disable();
             shiftYAction.action.performed -= OnShiftY;
+            rAction.action.Disable();
+            rAction.action.performed -= OnR;
+            tAction.action.Disable();
+            tAction.action.performed -= OnT;
+            pAction.action.Disable();
+            pAction.action.performed -= OnP;
+            mAction.action.Disable();
+            mAction.action.performed -= OnM;
         }
 
         private void Update()
         {
-            _mousePosition = mousePositionAction.action.ReadValue<Vector2>();
-
-            CursorManager.Instance.SetCursorPosition(_mousePosition);
+            if (CursorManager.Instance.IsLocked)
+            {
+                _mousePosition = CursorManager.Instance.CenterScreen;
+            }
+            else
+            {
+                _mousePosition = mousePositionAction.action.ReadValue<Vector2>();
+                CursorManager.Instance.SetCursorPosition(_mousePosition);
+            }
 
             if (!PlayerController.Current) return;
             
@@ -101,6 +131,10 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
                 // when we lock the cursor, the mousePosition is only updated after the first next event 
                 // -> not moving the mouse makes that the raycast is made from the previous unlock mouse position
                 mouseController.RayCast(_mousePosition, PlayerController.Current.settings.raycastLength);
+            }
+            else
+            {
+                mouseController.Reset();
             }
 
         }
@@ -141,6 +175,26 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         {
             OnShiftYKey?.Invoke(ctx);
         }
-    
+        
+        private void OnR(InputAction.CallbackContext ctx)
+        {
+            OnRKey?.Invoke(ctx);
+        }
+        
+        private void OnT(InputAction.CallbackContext ctx)
+        {
+            OnTKey?.Invoke(ctx);
+        }
+        
+        private void OnP(InputAction.CallbackContext ctx)
+        {
+            OnPKey?.Invoke(ctx);
+        }
+        
+        private void OnM(InputAction.CallbackContext ctx)
+        {
+            OnMKey?.Invoke(ctx);
+        }
+
     }
 }

@@ -9,6 +9,8 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         public static CursorManager Instance { get; private set; }
         
         public bool IsLocked { get; private set; }
+        
+        public Vector3 CenterScreen { get; private set; }
 
         [SerializeField] private CursorBase fixedCursor;
         [SerializeField] private CursorBase defaultCursor;
@@ -91,9 +93,14 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         public void SetLockState(bool isLocked)
         {
             IsLocked = isLocked;
-            Cursor.lockState = IsLocked ? CursorLockMode.Locked : CursorLockMode.None; // TODO : in the option menu, chose between confined and none
-        
-            if (IsLocked) _cursorPosition = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+            
+            Cursor.lockState = IsLocked ? CursorLockMode.Locked : CursorLockMode.None;
+            
+            if (IsLocked)
+            {
+                CenterScreen = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+                _cursorPosition = CenterScreen;
+            }
 
             ResetDefaultCursor();
         }

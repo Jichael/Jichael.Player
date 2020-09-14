@@ -76,6 +76,38 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "R",
+                    "type": "Button",
+                    "id": "513a1576-6fb2-4e3f-95bb-92007f626c4d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "T",
+                    "type": "Button",
+                    "id": "bfbe1e7f-2094-4546-860d-961ea017cc27",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "P",
+                    "type": "Button",
+                    "id": "244906d1-7f12-46d6-912e-e6ef889d025d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "M",
+                    "type": "Button",
+                    "id": "1a6b643a-c262-49e8-aa18-4ae47097a2af",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -212,7 +244,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "PM",
+                    "name": "AE",
                     "id": "7921abd3-992b-4e1b-83b7-e87b762bb5b1",
                     "path": "1DAxis",
                     "interactions": "",
@@ -225,7 +257,7 @@
                 {
                     "name": "negative",
                     "id": "316ec193-3873-4069-aed1-0ac7784f2931",
-                    "path": "<Keyboard>/semicolon",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -236,7 +268,7 @@
                 {
                     "name": "positive",
                     "id": "1f56f41e-daab-44ba-a9dd-d9724c970166",
-                    "path": "<Keyboard>/p",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -276,6 +308,50 @@
                     "action": "ShiftY",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "84566485-8b81-4412-817f-564ff089777f",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "R",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28ef968f-3476-4e4c-b5ed-4cf14dfae8a2",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "T",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8469d85b-43c0-4f1f-a1bd-a899051124b0",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "P",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "86d27b51-8503-4801-82aa-37e9f2da1781",
+                    "path": "<Keyboard>/semicolon",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "M",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

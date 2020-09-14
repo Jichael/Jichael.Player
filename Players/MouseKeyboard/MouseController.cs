@@ -64,6 +64,17 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             }
         }
 
+        public void Reset()
+        {
+            if(!_isHovering) return;
+
+            _isHovering = false;
+            _hitCollider = null;
+            _currentInteractions.HoverExit(this);
+            _currentInteractions = null;
+            
+        }
+
         public void LeftClick()
         {
             if(!_isHovering) return;
