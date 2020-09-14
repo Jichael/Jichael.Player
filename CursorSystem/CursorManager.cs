@@ -1,5 +1,5 @@
 ﻿using System;
-using Jichaels.Localization;
+using CustomPackages.Silicom.Localization.Runtime;
 using UnityEngine;
 
 namespace CustomPackages.Silicom.Player.CursorSystem
