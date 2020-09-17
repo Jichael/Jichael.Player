@@ -17,6 +17,7 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         [SerializeField] private CursorBase zoomCursor;
         [SerializeField] private CursorBase handCursor;
         [SerializeField] private CursorBase informationCursor;
+        [SerializeField] private CursorBase textCursor;
 
         public CursorHintLevel hintLevel;
 
@@ -36,6 +37,7 @@ namespace CustomPackages.Silicom.Player.CursorSystem
             handCursor.HideCursor();
             informationCursor.HideCursor();
             fixedCursor.HideCursor();
+            textCursor.HideCursor();
             SetLockState(false);
         }
 
@@ -119,6 +121,8 @@ namespace CustomPackages.Silicom.Player.CursorSystem
                     return informationCursor;
                 case CursorType.Fixed:
                     return fixedCursor;
+                case CursorType.Text:
+                    return textCursor;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(cursorType), cursorType, null);
             }
@@ -132,7 +136,8 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         Zoom,
         Hand,
         Information,
-        Fixed
+        Fixed,
+        Text
     }
 
     public enum CursorHintLevel
