@@ -96,7 +96,7 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         {
             IsLocked = isLocked;
             
-            Cursor.lockState = IsLocked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.lockState = IsLocked ? CursorLockMode.Locked : CursorLockMode.Confined;
             
             if (IsLocked)
             {

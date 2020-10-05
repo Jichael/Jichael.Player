@@ -7,6 +7,8 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 {
     public class InputsHandlerMouseKeyboard : InputsHandler
     {
+        
+        public new static InputsHandlerMouseKeyboard Current { get; private set; }
 
         public static event Action<InputAction.CallbackContext> OnEscapeKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnVKey = delegate {};
@@ -15,6 +17,10 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         public static event Action<InputAction.CallbackContext> OnTKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnPKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnMKey = delegate {};
+        public static event Action<InputAction.CallbackContext> On1Key = delegate {};
+        public static event Action<InputAction.CallbackContext> On2Key = delegate {};
+        public static event Action<InputAction.CallbackContext> On3Key = delegate {};
+        public static event Action<InputAction.CallbackContext> On4Key = delegate {};
 
         [SerializeField] private InputActionReference mousePositionAction;
         [SerializeField] private InputActionReference leftClickAction;
@@ -31,6 +37,10 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         [SerializeField] private InputActionReference tAction;
         [SerializeField] private InputActionReference pAction;
         [SerializeField] private InputActionReference mAction;
+        [SerializeField] private InputActionReference oneAction;
+        [SerializeField] private InputActionReference twoAction;
+        [SerializeField] private InputActionReference threeAction;
+        [SerializeField] private InputActionReference fourAction;
 
         [SerializeField] private float mouseSensitivity = 1;
 
@@ -42,9 +52,26 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         private Vector3 _movement;
         private Vector2 _rotationInput;
 
+        private bool _listening;
+
+        public Vector2 MousePosition => _mousePosition;
+
         private void OnEnable()
         {
             Current = this;
+            StartInputProcessing();
+        }
+
+        private void OnDisable()
+        {
+            Current = null;
+            StopInputProcessing();
+        }
+
+        public override void StartInputProcessing()
+        {
+            if(_listening) return;
+            
             mousePositionAction.action.Enable();
             movementAction.action.Enable();
             thirdAxisMovementAction.action.Enable();
@@ -69,11 +96,23 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             pAction.action.performed += OnP;
             mAction.action.Enable();
             mAction.action.performed += OnM;
-        }
 
-        private void OnDisable()
+            oneAction.action.Enable();
+            oneAction.action.performed += On1;
+            twoAction.action.Enable();
+            twoAction.action.performed += On2;
+            threeAction.action.Enable();
+            threeAction.action.performed += On3;
+            fourAction.action.Enable();
+            fourAction.action.performed += On4;
+
+            _listening = true;
+        }
+        
+        public override void StopInputProcessing()
         {
-            Current = null;
+            if(!_listening) return;
+            
             mousePositionAction.action.Disable();
             movementAction.action.Disable();
             thirdAxisMovementAction.action.Disable();
@@ -82,8 +121,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             leftClickAction.action.Disable();
             rightClickAction.action.performed -= OnRightClick;
             rightClickAction.action.Disable();
-            
-            
+
             escapeAction.action.Disable();
             escapeAction.action.performed -= OnEscape;
             vAction.action.Disable();
@@ -98,6 +136,17 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             pAction.action.performed -= OnP;
             mAction.action.Disable();
             mAction.action.performed -= OnM;
+            
+            oneAction.action.Disable();
+            oneAction.action.performed -= On1;
+            twoAction.action.Disable();
+            twoAction.action.performed -= On2;
+            threeAction.action.Disable();
+            threeAction.action.performed -= On3;
+            fourAction.action.Disable();
+            fourAction.action.performed -= On4;
+
+            _listening = false;
         }
 
         private void Update()
@@ -194,6 +243,26 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         private void OnM(InputAction.CallbackContext ctx)
         {
             OnMKey?.Invoke(ctx);
+        }
+        
+        private void On1(InputAction.CallbackContext ctx)
+        {
+            On1Key?.Invoke(ctx);
+        }
+        
+        private void On2(InputAction.CallbackContext ctx)
+        {
+            On2Key?.Invoke(ctx);
+        }
+        
+        private void On3(InputAction.CallbackContext ctx)
+        {
+            On3Key?.Invoke(ctx);
+        }
+        
+        private void On4(InputAction.CallbackContext ctx)
+        {
+            On4Key?.Invoke(ctx);
         }
 
     }
