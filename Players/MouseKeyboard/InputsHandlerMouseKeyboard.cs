@@ -8,7 +8,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
     public class InputsHandlerMouseKeyboard : InputsHandler
     {
         
-        public new static InputsHandlerMouseKeyboard Current { get; private set; }
+        public static InputsHandlerMouseKeyboard Current { get; private set; }
 
         public static event Action<InputAction.CallbackContext> OnEscapeKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnVKey = delegate {};
@@ -58,21 +58,23 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 
         private void OnEnable()
         {
+            Instance = this;
             Current = this;
             StartInputProcessing();
+            mousePositionAction.action.Enable();
         }
 
         private void OnDisable()
         {
             Current = null;
             StopInputProcessing();
+            mousePositionAction.action.Disable();
         }
 
         public override void StartInputProcessing()
         {
             if(_listening) return;
             
-            mousePositionAction.action.Enable();
             movementAction.action.Enable();
             thirdAxisMovementAction.action.Enable();
             rotationAction.action.Enable();
@@ -113,7 +115,6 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         {
             if(!_listening) return;
             
-            mousePositionAction.action.Disable();
             movementAction.action.Disable();
             thirdAxisMovementAction.action.Disable();
             rotationAction.action.Disable();

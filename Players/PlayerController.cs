@@ -47,7 +47,7 @@ namespace CustomPackages.Silicom.Player.Players
         private bool _prevLockInteractions;
 
         private Transform _transform;
-        private Transform _cameraTransform;
+        public Transform CameraTransform { get; private set; }
         private Vector3 _movement;
         private Vector2 _rotation;
         private Vector3 _currentBodyRotation;
@@ -65,10 +65,10 @@ namespace CustomPackages.Silicom.Player.Players
         private void Awake()
         {
             _transform = transform;
-            _cameraTransform = virtualCamera.transform;
+            CameraTransform = virtualCamera.transform;
 
             _currentBodyRotation = _transform.localEulerAngles;
-            _currentCameraRotation = _cameraTransform.localEulerAngles;
+            _currentCameraRotation = CameraTransform.localEulerAngles;
 
             _defaultPosition = _transform.position;
             _defaultRotation = _transform.eulerAngles;
@@ -178,7 +178,7 @@ namespace CustomPackages.Silicom.Player.Players
                     settings.maxRotationX);
             }
         
-            _cameraTransform.localEulerAngles = _currentCameraRotation;
+            CameraTransform.localEulerAngles = _currentCameraRotation;
 
         }
 
