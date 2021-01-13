@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
-    NearClipPlane: 0.3
+    NearClipPlane: 0.001
     FarClipPlane: 1000
     Dutch: 0
     LensShift: {x: 0, y: 0}
@@ -167,6 +167,7 @@ MonoBehaviour:
     maxRotationY: 0
     gravity: {x: 0, y: -9.81, z: 0}
     allowThirdAxisMovement: 0
+    thirdAxisSpeedMultiplier: 1
     limitMovementX: 0
     xAxisBounds: {x: 0, y: 0}
     limitMovementY: 0
@@ -177,12 +178,8 @@ MonoBehaviour:
     rotationSpeedMultiplier: 1
     lockedCursor: 1
     raycastLength: 2
-  onPlayerEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onPlayerExit:
-    m_PersistentCalls:
-      m_Calls: []
+  onPlayerEnterEvents: []
+  onPlayerExitEvents: []
   lockedMovement: 0
   lockedRotation: 0
   lockedInteractions: 0
