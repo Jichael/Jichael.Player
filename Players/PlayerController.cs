@@ -19,6 +19,9 @@ namespace CustomPackages.Silicom.Player.Players
 
         [SerializeField] private bool isDefaultPlayerInScene;
 
+        public PlayerControllerMode normalMode;
+        public PlayerControllerMode uiMode;
+        
         public PlayerControllerSettings settings;
 
         [Serializable]
@@ -34,17 +37,18 @@ namespace CustomPackages.Silicom.Player.Players
         }
         [SerializeField] private DelayedEvents[] onPlayerEnterEvents;
         [SerializeField] private DelayedEvents[] onPlayerExitEvents;
-        
-        [SerializeField] private bool lockedMovement;
-        [SerializeField] private bool lockedRotation;
-        [SerializeField] private bool lockedInteractions;
 
         public bool LockedMovement { get; private set; }
-        private bool _prevLockMovement;
         public bool LockedRotation { get; private set; }
-        private bool _prevLockRotation;
-        public bool LockedInteractions { get; private set; }
-        private bool _prevLockInteractions;
+        public bool Locked3DInteractions { get; private set; }
+        public bool LockedUIInteractions { get; private set; }
+        
+        public bool LockMovementOverride { get; set; }
+        public bool LockRotationOverride { get; set; }
+        public bool Lock3DInteractionsOverride { get; set; }
+        public bool LockUIInteractionsOverride { get; set; }
+
+        private static bool _isNormalMode;
 
         private Transform _transform;
         public Transform CameraTransform { get; private set; }
@@ -58,8 +62,8 @@ namespace CustomPackages.Silicom.Player.Players
         private Vector3 _defaultRotation;
         private Vector3 _defaultPosition;
 
-        public bool CanSwitch => _switchDelay < Time.time;
-        private float _switchDelay = -1;
+        public static bool Switching => _switchDelay >= Time.time;
+        private static float _switchDelay = -1;
         private const float SWITCH_DELAY = 1;
 
         private void Awake()
@@ -78,18 +82,11 @@ namespace CustomPackages.Silicom.Player.Players
                 Vector3 pos = _transform.position;
                 _bounds = new Bounds
                 {
-                    x = {x = pos.x + settings.xAxisBounds.x, y = pos.x + settings.xAxisBounds.y},
-                    y = {x = pos.y + settings.yAxisBounds.x, y = pos.y + settings.yAxisBounds.y},
-                    z = {x = pos.z + settings.zAxisBounds.x, y = pos.z + settings.zAxisBounds.y}
+                    X = {x = pos.x + settings.xAxisBounds.x, y = pos.x + settings.xAxisBounds.y},
+                    Y = {x = pos.y + settings.yAxisBounds.x, y = pos.y + settings.yAxisBounds.y},
+                    Z = {x = pos.z + settings.zAxisBounds.x, y = pos.z + settings.zAxisBounds.y}
                 };
             }
-
-            LockedMovement = lockedMovement;
-            LockedRotation = lockedRotation;
-            LockedInteractions = lockedInteractions;
-            _prevLockMovement = LockedMovement;
-            _prevLockRotation = LockedRotation;
-            _prevLockInteractions = LockedInteractions;
 
             if (!isDefaultPlayerInScene)
             {
@@ -106,6 +103,7 @@ namespace CustomPackages.Silicom.Player.Players
                 if (Current != null)
                 {
                     Debug.LogError("There is multiple PlayerController set as default. This is not allowed and will produce unexpected results.", this);
+                    return;
                 }
 #endif
                 SwitchPlayerController();
@@ -113,12 +111,13 @@ namespace CustomPackages.Silicom.Player.Players
         }
 
 
-        public void Move(Vector3 movementVector)
+        public void Move(Vector3 movementVector, bool sprinting)
         {
-            if (LockedMovement) return;
+            if (LockedMovement || Switching) return;
 
             _movement = settings.movementSpeedMultiplier * movementVector.y * _transform.forward +
                         settings.movementSpeedMultiplier * movementVector.x * _transform.right;
+            if (sprinting) _movement *= settings.sprintMultiplier;
 
             if (settings.allowThirdAxisMovement)
             {
@@ -135,17 +134,17 @@ namespace CustomPackages.Silicom.Player.Players
             
                 if (settings.limitMovementX)
                 {
-                    _movement.x = Mathf.Clamp(_movement.x, _bounds.x.x, _bounds.x.y);
+                    _movement.x = Mathf.Clamp(_movement.x, _bounds.X.x, _bounds.X.y);
                 }
             
                 if (settings.limitMovementY)
                 {
-                    _movement.y = Mathf.Clamp(_movement.y, _bounds.y.x, _bounds.y.y);
+                    _movement.y = Mathf.Clamp(_movement.y, _bounds.Y.x, _bounds.Y.y);
                 }
             
                 if (settings.limitMovementZ)
                 {
-                    _movement.z = Mathf.Clamp(_movement.z, _bounds.z.x, _bounds.z.y);
+                    _movement.z = Mathf.Clamp(_movement.z, _bounds.Z.x, _bounds.Z.y);
                 }
 
                 _movement -= pos;
@@ -156,7 +155,7 @@ namespace CustomPackages.Silicom.Player.Players
 
         public void Rotate(Vector2 rotationVector)
         {
-            if (LockedRotation) return;
+            if (LockedRotation || Switching) return;
 
             _rotation = settings.rotationSpeedMultiplier * rotationVector;
         
@@ -188,10 +187,26 @@ namespace CustomPackages.Silicom.Player.Players
             _transform.position = destination;
             characterController.enabled = true;
         }
+        
+        public void Teleport(Vector3 destination, Quaternion rotation)
+        {
+            characterController.enabled = false;
+            _transform.position = destination;
+            _transform.rotation = rotation;
+            _currentBodyRotation = _transform.localEulerAngles;
+            _currentCameraRotation = Vector3.zero;
+            CameraTransform.localEulerAngles = _currentCameraRotation;
+            characterController.enabled = true;
+        }
+
+        public void Teleport(Transform destination)
+        {
+            Teleport(destination.position, destination.rotation);
+        }
 
         public void SwitchPlayerController()
         {
-            if(Current == this || !CanSwitch) return;
+            if(Current == this || Switching) return;
 
             _switchDelay = Time.time + SWITCH_DELAY;
             
@@ -203,50 +218,6 @@ namespace CustomPackages.Silicom.Player.Players
             Current = this;
         
             Current.EnterPlayer();
-        }
-
-        public void LockMovement()
-        {
-            if (LockedMovement) return;
-            
-            _prevLockMovement = LockedMovement;
-            LockedMovement = true;
-        }
-
-        public void UnlockMovement(bool forceUnlock = false)
-        {
-            if (!LockedMovement) return;
-            LockedMovement = forceUnlock ? false : _prevLockMovement;
-        }
-        
-        public void LockRotation()
-        {
-            if (LockedRotation) return;
-            
-            _prevLockRotation = LockedRotation;
-            LockedRotation = true;
-        }
-
-        public void UnlockRotation(bool forceUnlock = false)
-        {
-            if (!LockedRotation) return;
-            
-            LockedRotation = forceUnlock ? false : _prevLockRotation;
-        }
-        
-        public void LockInteractions()
-        {
-            if (LockedInteractions) return;
-            
-            _prevLockInteractions = LockedInteractions;
-            LockedInteractions = true;
-        }
-
-        public void UnlockInteractions(bool forceUnlock = false)
-        {
-            if (!LockedInteractions) return;
-            
-            LockedInteractions = forceUnlock ? false : _prevLockInteractions;
         }
 
         private void EnterPlayer()
@@ -264,7 +235,8 @@ namespace CustomPackages.Silicom.Player.Players
                 }
             }
             virtualCamera.Priority = 11;
-            CursorManager.Instance.SetLockState(settings.lockedCursor);
+            if(_isNormalMode) SetModeNormal();
+            else SetModeUI();
         }
 
         private void ExitPlayer()
@@ -295,6 +267,26 @@ namespace CustomPackages.Silicom.Player.Players
             _currentCameraRotation.x = _defaultRotation.x;
         }
 
+        public void SetModeNormal()
+        {
+            CursorManager.Instance.SetLockState(normalMode.lockedCursor);
+            LockedMovement = normalMode.lockedMovement;
+            LockedRotation = normalMode.lockedRotation;
+            Locked3DInteractions = normalMode.locked3DInteraction;
+            LockedUIInteractions = normalMode.lockedUIInteraction;
+            _isNormalMode = true;
+        }
+
+        public void SetModeUI()
+        {
+            CursorManager.Instance.SetLockState(uiMode.lockedCursor);
+            LockedMovement = uiMode.lockedMovement;
+            LockedRotation = uiMode.lockedRotation;
+            Locked3DInteractions = uiMode.locked3DInteraction;
+            LockedUIInteractions = uiMode.lockedUIInteraction;
+            _isNormalMode = false;
+        }
+
     }
 
 
@@ -309,7 +301,7 @@ namespace CustomPackages.Silicom.Player.Players
         [ShowIf("clampRotationY")] public float minRotationY;
         [ShowIf("clampRotationY")] public float maxRotationY;
 
-        public Vector3 gravity;
+        public Vector3 gravity = new Vector3(0, -9.81f, 0);
 
         public bool allowThirdAxisMovement;
         [ShowIf("allowThirdAxisMovement")] public float thirdAxisSpeedMultiplier = 1;
@@ -324,17 +316,25 @@ namespace CustomPackages.Silicom.Player.Players
         [ShowIf("limitMovementZ")] public Vector2 zAxisBounds;
 
         public float movementSpeedMultiplier = 1;
+        public float sprintMultiplier = 1.5f;
         public float rotationSpeedMultiplier = 1;
-
-        public bool lockedCursor;
-
         public float raycastLength = 2;
+    }
+
+    [Serializable]
+    public class PlayerControllerMode
+    {
+        public bool lockedCursor;
+        public bool lockedMovement;
+        public bool lockedRotation;
+        public bool locked3DInteraction;
+        public bool lockedUIInteraction;
     }
 
     public class Bounds
     {
-        public Vector2 x;
-        public Vector2 y;
-        public Vector2 z;
+        public Vector2 X;
+        public Vector2 Y;
+        public Vector2 Z;
     }
 }

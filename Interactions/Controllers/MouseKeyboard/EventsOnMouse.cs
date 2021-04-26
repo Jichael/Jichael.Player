@@ -5,50 +5,40 @@ using UnityEngine.Serialization;
 
 namespace CustomPackages.Silicom.Player.Interactions.Controllers.MouseKeyboard
 {
-    [RequireComponent(typeof(ChangeCursorOnMouseHover))]
     public class EventsOnMouse : MonoBehaviour, IMouseInteract
     {
-        [FormerlySerializedAs("mouseButton")] [SerializeField] private MouseController.MouseEvent mouseEvent;
-
-        // Array of events in case we wan't to have ordered events (UnityEvents order is not defined)
-        [SerializeField] private UnityEvent[] events;
+        [FormerlySerializedAs("leftClickEvents")] [SerializeField] private UnityEvent[] useEvents;
+        [SerializeField] private UnityEvent[] hoverEnterEvents;
+        [SerializeField] private UnityEvent[] hoverStayEvents;
+        [SerializeField] private UnityEvent[] hoverExitEvents;
 
         [SerializeField] private bool disableInteractions;
-        public bool DisableInteraction => disableInteractions;
 
-        public void LeftClick(MouseController mouseController)
+        public bool DisableInteraction
         {
-            if (mouseEvent != MouseController.MouseEvent.LeftClick) return;
-            InvokeEvents();
+            get => disableInteractions;
+            set => disableInteractions = value;
         }
 
-        public void RightClick(MouseController mouseController)
+        public void Use(MouseController mouseController)
         {
-            if (mouseEvent != MouseController.MouseEvent.RightClick) return;
-            InvokeEvents();
+            for(int i = 0; i < useEvents.Length; i++) useEvents[i]?.Invoke();
         }
 
         public void HoverEnter(MouseController mouseController)
-        { 
-            if (mouseEvent != MouseController.MouseEvent.HoverEnter) return;
-            InvokeEvents();
+        {
+            for(int i = 0; i < hoverEnterEvents.Length; i++) hoverEnterEvents[i]?.Invoke();
         }
 
         public void HoverStay(MouseController mouseController)
         {
-            if (mouseEvent != MouseController.MouseEvent.HoverStay) return;
-            InvokeEvents();
+            for(int i = 0; i < hoverStayEvents.Length; i++) hoverStayEvents[i]?.Invoke();
         }
 
         public void HoverExit(MouseController mouseController)
         {
-            if (mouseEvent != MouseController.MouseEvent.HoverExit) return;
-            InvokeEvents();
+            for(int i = 0; i < hoverExitEvents.Length; i++) hoverExitEvents[i]?.Invoke();
         }
 
-        private void InvokeEvents()
-        {
-            for(int i = 0; i < events.Length; i++) events[i]?.Invoke();
-        }
     }
 }

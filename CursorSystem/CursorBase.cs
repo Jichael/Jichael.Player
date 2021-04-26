@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CustomPackages.Silicom.Player.CursorSystem
 {
@@ -7,6 +8,8 @@ namespace CustomPackages.Silicom.Player.CursorSystem
     {
         public GameObject hint;
         public TextMeshProUGUI hintText;
+        public GameObject inputIcon;
+        public Image inputIconImage;
 
         [SerializeField] private Animator animator;
 
@@ -65,6 +68,17 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         public void HideHint()
         {
             hint.SetActive(false);
+        }
+
+        public void ShowDisplayIcon(Sprite icon)
+        {
+            inputIconImage.sprite = icon;
+            inputIcon.SetActive(true);
+        }
+
+        public void HideDisplayIcon()
+        {
+            inputIcon.SetActive(false);
         }
     }
 }

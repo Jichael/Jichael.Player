@@ -1,5 +1,6 @@
 ﻿using System;
 using CustomPackages.Silicom.Localization.Runtime;
+using CustomPackages.Silicom.Player.Players;
 using UnityEngine;
 
 namespace CustomPackages.Silicom.Player.CursorSystem
@@ -12,12 +13,15 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         
         public Vector3 CenterScreen { get; private set; }
 
+        public event Action<bool> OnLockStateChanged;
+
         [SerializeField] private CursorBase fixedCursor;
         [SerializeField] private CursorBase defaultCursor;
         [SerializeField] private CursorBase zoomCursor;
         [SerializeField] private CursorBase handCursor;
         [SerializeField] private CursorBase informationCursor;
         [SerializeField] private CursorBase textCursor;
+        [SerializeField] private CursorBase unzoomCursor;
 
         public CursorHintLevel hintLevel;
 
@@ -30,6 +34,7 @@ namespace CustomPackages.Silicom.Player.CursorSystem
 
         private void Awake()
         {
+            Instance = this;
             Cursor.visible = false;
 
             SetCursorNoHide(defaultCursorInfo);
@@ -38,22 +43,17 @@ namespace CustomPackages.Silicom.Player.CursorSystem
             informationCursor.HideCursor();
             fixedCursor.HideCursor();
             textCursor.HideCursor();
+            unzoomCursor.HideCursor();
             SetLockState(false);
         }
 
-        private void OnEnable()
-        {
-            Instance = this;
-        }
-
-        private void OnDisable()
+        private void OnDestroy()
         {
             Instance = null;
         }
 
         public void SetCursorPosition(Vector3 position)
         {
-            if (IsLocked) return;
             _cursorPosition = position;
             _currentCursor.transform.position = _cursorPosition;
         }
@@ -82,6 +82,15 @@ namespace CustomPackages.Silicom.Player.CursorSystem
             {
                 _currentCursor.ShowHint(hint);
             }
+
+            if (cursorInfo.showInputIcon)
+            {
+                _currentCursor.ShowDisplayIcon(InputReferences.Instance.InputActionToIcon(InputsHandler.Instance.UseAction));
+            }
+            else
+            {
+                _currentCursor.HideDisplayIcon();
+            }
         
             _currentCursor.ShowCursor();
             _currentCursor.transform.position = _cursorPosition;
@@ -105,6 +114,7 @@ namespace CustomPackages.Silicom.Player.CursorSystem
             }
 
             ResetDefaultCursor();
+            OnLockStateChanged?.Invoke(IsLocked);
         }
 
         private CursorBase CursorTypeToCursor(CursorType cursorType)
@@ -123,6 +133,8 @@ namespace CustomPackages.Silicom.Player.CursorSystem
                     return fixedCursor;
                 case CursorType.Text:
                     return textCursor;
+                case CursorType.Unzoom:
+                    return unzoomCursor;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(cursorType), cursorType, null);
             }
@@ -137,7 +149,8 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         Hand,
         Information,
         Fixed,
-        Text
+        Text,
+        Unzoom
     }
 
     public enum CursorHintLevel
@@ -151,8 +164,9 @@ namespace CustomPackages.Silicom.Player.CursorSystem
     public class CursorInfo
     {
         public CursorType cursorType;
-        [SerializeField] private string cursorHintSimple;
-        [SerializeField] private string cursorHintDetailed;
+        public bool showInputIcon;
+        public string cursorHintSimple;
+        public string cursorHintDetailed;
         [SerializeField] private bool needTranslation;
 
         public string GetHint(CursorHintLevel hintLevel)
@@ -174,8 +188,8 @@ namespace CustomPackages.Silicom.Player.CursorSystem
         private void TranslateHints()
         {
             needTranslation = false;
-            cursorHintSimple = LanguageManager.Instance.RequestValue(cursorHintSimple);
-            cursorHintDetailed = LanguageManager.Instance.RequestValue(cursorHintDetailed);
+            if(!string.IsNullOrEmpty(cursorHintSimple)) cursorHintSimple = LanguageManager.Instance.RequestValue(cursorHintSimple);
+            if(!string.IsNullOrEmpty(cursorHintDetailed)) cursorHintDetailed = LanguageManager.Instance.RequestValue(cursorHintDetailed);
         }
     }
 }

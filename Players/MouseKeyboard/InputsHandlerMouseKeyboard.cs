@@ -10,6 +10,8 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         
         public static InputsHandlerMouseKeyboard Current { get; private set; }
 
+        public override InputActionReference UseAction => leftClickAction;
+
         public static event Action<InputAction.CallbackContext> OnEscapeKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnVKey = delegate {};
         public static event Action<InputAction.CallbackContext> OnShiftYKey = delegate {};
@@ -27,6 +29,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         [SerializeField] private InputActionReference rightClickAction;
     
         [SerializeField] private InputActionReference movementAction;
+        [SerializeField] private InputActionReference sprintAction;
         [SerializeField] private InputActionReference thirdAxisMovementAction;
         [SerializeField] private InputActionReference rotationAction;
 
@@ -47,28 +50,51 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         [SerializeField] private MouseController mouseController;
 
         private Vector2 _mousePosition;
+        private bool _mousePositionNeedUpdate;
         private Vector2 _movementInput;
         private float _thirdAxisMovement;
         private Vector3 _movement;
+        private bool _sprint;
         private Vector2 _rotationInput;
 
         private bool _listening;
 
         public Vector2 MousePosition => _mousePosition;
 
-        private void OnEnable()
+        private void Awake()
         {
             Instance = this;
+        }
+
+        private void OnEnable()
+        {
             Current = this;
             StartInputProcessing();
             mousePositionAction.action.Enable();
         }
-
         private void OnDisable()
         {
             Current = null;
             StopInputProcessing();
             mousePositionAction.action.Disable();
+            if(_mousePositionNeedUpdate) mousePositionAction.action.performed -= OnMousePositionUpdate;
+        }
+
+        private void Start()
+        {
+            CursorManager.Instance.OnLockStateChanged += OnLockStateChanged;
+        }
+
+        private void OnDestroy()
+        {
+            CursorManager.Instance.OnLockStateChanged -= OnLockStateChanged;
+        }
+
+        private void OnLockStateChanged(bool lockState)
+        {
+            if (lockState || _mousePositionNeedUpdate) return;
+            _mousePositionNeedUpdate = true;
+            mousePositionAction.action.performed += OnMousePositionUpdate;
         }
 
         public override void StartInputProcessing()
@@ -76,6 +102,8 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             if(_listening) return;
             
             movementAction.action.Enable();
+            sprintAction.action.Enable();
+            sprintAction.action.performed += OnSprint;
             thirdAxisMovementAction.action.Enable();
             rotationAction.action.Enable();
             leftClickAction.action.Enable();
@@ -116,6 +144,8 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             if(!_listening) return;
             
             movementAction.action.Disable();
+            sprintAction.action.Disable();
+            sprintAction.action.performed -= OnSprint;
             thirdAxisMovementAction.action.Disable();
             rotationAction.action.Disable();
             leftClickAction.action.performed -= OnLeftClick;
@@ -158,36 +188,49 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             }
             else
             {
-                _mousePosition = mousePositionAction.action.ReadValue<Vector2>();
+                if (!_mousePositionNeedUpdate) _mousePosition = mousePositionAction.action.ReadValue<Vector2>();
                 CursorManager.Instance.SetCursorPosition(_mousePosition);
             }
 
             if (!PlayerController.Current) return;
-            
-            _movementInput = movementAction.action.ReadValue<Vector2>();
-            _thirdAxisMovement = -thirdAxisMovementAction.action.ReadValue<float>();
-            
-            _rotationInput = rotationAction.action.ReadValue<Vector2>() * mouseSensitivity;
 
-            _movement = _movementInput;
-            _movement.z = _thirdAxisMovement;
-            
-            PlayerController.Current.Move(_movement * Time.deltaTime);
-            PlayerController.Current.Rotate(_rotationInput);
-
-            if (!PlayerController.Current.LockedInteractions)
-            {
-                // TODO : wait for a fix in new input system :
-                // when we lock the cursor, the mousePosition is only updated after the first next event 
-                // -> not moving the mouse makes that the raycast is made from the previous unlock mouse position
-                mouseController.RayCast(_mousePosition, PlayerController.Current.settings.raycastLength);
-            }
-            else
+            if (PlayerController.Switching)
             {
                 mouseController.Reset();
             }
+            else
+            {
+                _movementInput = movementAction.action.ReadValue<Vector2>();
+                _thirdAxisMovement = -thirdAxisMovementAction.action.ReadValue<float>();
+            
+                _rotationInput = rotationAction.action.ReadValue<Vector2>() * mouseSensitivity;
 
+                _movement = _movementInput;
+                _movement.z = _thirdAxisMovement;
+            
+                PlayerController.Current.Move(_movement * Time.deltaTime, _sprint);
+                PlayerController.Current.Rotate(_rotationInput);
+                
+                if (!PlayerController.Current.Locked3DInteractions)
+                {
+                    // TODO : wait for a fix in new input system :
+                    // when we lock the cursor, the mousePosition is only updated after the first next event 
+                    // -> not moving the mouse makes that the raycast is made from the previous unlock mouse position
+                    mouseController.RayCast(_mousePosition, PlayerController.Current.settings.raycastLength);
+                }
+                else
+                {
+                    mouseController.Reset();
+                }
+            }
         }
+        
+        private void OnMousePositionUpdate(InputAction.CallbackContext ctx)
+        {
+            _mousePositionNeedUpdate = false;
+            mousePositionAction.action.performed -= OnMousePositionUpdate;
+        }
+
 
         private void OnLeftClick(InputAction.CallbackContext ctx)
         {
@@ -195,7 +238,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
         
             CursorManager.Instance.SetClickState(clicked);
         
-            if (clicked && PlayerController.Current && !PlayerController.Current.LockedInteractions)
+            if (clicked && PlayerController.Current && !PlayerController.Current.Locked3DInteractions && !PlayerController.Switching)
             {
                 mouseController.LeftClick();
             }
@@ -203,12 +246,18 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 
         private void OnRightClick(InputAction.CallbackContext ctx)
         {
-            bool clicked = Mathf.Approximately(ctx.ReadValue<float>(), 1);
-
-            if (clicked && PlayerController.Current && !PlayerController.Current.LockedInteractions)
-            {
-                mouseController.RightClick();
+            /*
+                bool clicked = Mathf.Approximately(ctx.ReadValue<float>(), 1);
+    
+                if (clicked && PlayerController.Current && !PlayerController.Current.Locked3DInteractions && !PlayerController.Switching)
+                {
+                    mouseController.RightClick();
+                }
+            */
             }
+        private void OnSprint(InputAction.CallbackContext ctx)
+        {
+            _sprint = Mathf.Approximately(ctx.ReadValue<float>(), 1);
         }
 
         private void OnEscape(InputAction.CallbackContext ctx)

@@ -4,8 +4,7 @@ namespace CustomPackages.Silicom.Player.Interactions
 {
     public interface IMouseInteract : IBaseInteract
     {
-        void LeftClick(MouseController mouseController);
-        void RightClick(MouseController mouseController);
+        void Use(MouseController mouseController);
         void HoverEnter(MouseController mouseController);
         void HoverStay(MouseController mouseController);
         void HoverExit(MouseController mouseController);
@@ -18,16 +17,7 @@ namespace CustomPackages.Silicom.Player.Interactions
             for (int i = 0; i < mouseInteractions.Length; i++)
             {
                 if(mouseInteractions[i].DisableInteraction) continue;
-                mouseInteractions[i].LeftClick(mouseController);
-            }
-        }
-    
-        public static void RightClick(this IMouseInteract[] mouseInteractions, MouseController mouseController)
-        {
-            for (int i = 0; i < mouseInteractions.Length; i++)
-            {
-                if(mouseInteractions[i].DisableInteraction) continue;
-                mouseInteractions[i].RightClick(mouseController);
+                mouseInteractions[i].Use(mouseController);
             }
         }
     

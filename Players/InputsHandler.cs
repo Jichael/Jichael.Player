@@ -1,12 +1,15 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace CustomPackages.Silicom.Player.Players
 {
-    public class InputsHandler : MonoBehaviour
+    public abstract class InputsHandler : MonoBehaviour
     {
         public static InputsHandler Instance { get; protected set; }
+        
+        public abstract InputActionReference UseAction { get; }
 
-        public virtual void StartInputProcessing() {}
-        public virtual void StopInputProcessing() {}
+        public abstract void StartInputProcessing();
+        public abstract void StopInputProcessing();
     }
 }

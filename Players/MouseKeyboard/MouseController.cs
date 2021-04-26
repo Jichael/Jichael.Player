@@ -1,5 +1,6 @@
 ﻿using CustomPackages.Silicom.Player.Interactions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 {
@@ -8,7 +9,7 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 
         public RaycastHit Hit => _hit;
 
-        [SerializeField] private new Camera camera;
+        private Camera _camera;
 
         private Ray _ray;
         private RaycastHit _hit;
@@ -18,9 +19,24 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
 
         private bool _isHovering;
 
+        private void Awake()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            _camera = Camera.main;
+        }
+
         public void RayCast(Vector2 mousePosition, float rayLength)
         {
-            _ray = camera.ScreenPointToRay(mousePosition);
+            _ray = _camera.ScreenPointToRay(mousePosition);
 
             if (Physics.Raycast(_ray, out _hit, rayLength))
             {
@@ -72,7 +88,6 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             _hitCollider = null;
             _currentInteractions.HoverExit(this);
             _currentInteractions = null;
-            
         }
 
         public void LeftClick()
@@ -81,20 +96,5 @@ namespace CustomPackages.Silicom.Player.Players.MouseKeyboard
             _currentInteractions.LeftClick(this);
         }
 
-        public void RightClick()
-        {
-            if(!_isHovering) return;
-            _currentInteractions.RightClick(this);
-        }
-    
-        public enum MouseEvent
-        {
-            LeftClick,
-            RightClick,
-            HoverEnter,
-            HoverStay,
-            HoverExit
-        }
-    
     }
 }

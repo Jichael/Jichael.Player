@@ -2,6 +2,7 @@
 using CustomPackages.Silicom.Core.Runtime;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CustomPackages.Silicom.Player.Interactions.Views
 {
@@ -11,13 +12,24 @@ namespace CustomPackages.Silicom.Player.Interactions.Views
         [SerializeField] private Transform toRotate;
 
         [SerializeField] private bool smoothRotation = true;
-        [SerializeField, ShowIf("smoothRotation")] private float rotationSpeed = 1;
+        [FormerlySerializedAs("rotationSpeed")] [SerializeField, ShowIf("smoothRotation")] private float rotationTime = 1;
     
         private Quaternion _startRotation;
         private Quaternion _endRotation;
+        private float _rotationTime;
 
         private bool _isRotating;
         private Coroutine _coroutine;
+
+        private void Awake()
+        {
+            _rotationTime = rotationTime;
+        }
+
+        public void SetRotationTime(float time)
+        {
+            _rotationTime = time;
+        }
 
         public void Rotate(Vector3 eulers, bool forceNoSmooth = false)
         {
@@ -52,7 +64,7 @@ namespace CustomPackages.Silicom.Player.Interactions.Views
 
             while (delta < 1)
             {
-                delta += Time.deltaTime * rotationSpeed;
+                delta += Time.deltaTime / _rotationTime;
                 toRotate.localRotation = Quaternion.Slerp(_startRotation, _endRotation, delta);
                 yield return Yielders.EndOfFrame;
             }

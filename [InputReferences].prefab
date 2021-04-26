@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2966127939881865759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2966127939881865757}
+  - component: {fileID: 2966127939881865756}
+  m_Layer: 0
+  m_Name: '[InputReferences]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2966127939881865757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2966127939881865759}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2966127939881865756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2966127939881865759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ed35d6a5f148f68a7f607bd4ee23de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseLeftClick:
+    icon: {fileID: 0}
+  mouseRightClick:
+    icon: {fileID: 0}
+  keyboard1:
+    icon: {fileID: 0}
+  keyboard2:
+    icon: {fileID: 0}
+  keyboard3:
+    icon: {fileID: 0}
+  keyboard4:
+    icon: {fileID: 0}
+  keyboard5:
+    icon: {fileID: 0}
+  keyboard6:
+    icon: {fileID: 0}
+  keyboard7:
+    icon: {fileID: 0}
+  keyboard8:
+    icon: {fileID: 0}
+  keyboard9:
+    icon: {fileID: 0}
+  keyboard0:
+    icon: {fileID: 0}
+  keyboardA:
+    icon: {fileID: 0}
+  keyboardZ:
+    icon: {fileID: 0}
+  keyboardE:
+    icon: {fileID: 0}
+  keyboardR:
+    icon: {fileID: 0}
+  keyboardT:
+    icon: {fileID: 0}
+  keyboardY:
+    icon: {fileID: 0}
+  keyboardU:
+    icon: {fileID: 0}
+  keyboardI:
+    icon: {fileID: 0}
+  keyboardO:
+    icon: {fileID: 0}
+  keyboardP:
+    icon: {fileID: 0}
+  keyboardQ:
+    icon: {fileID: 0}
+  keyboardS:
+    icon: {fileID: 0}
+  keyboardD:
+    icon: {fileID: 0}
+  keyboardF:
+    icon: {fileID: 21300000, guid: ef1434b3a7199ea409438439d8a69a94, type: 3}
+  keyboardG:
+    icon: {fileID: 0}
+  keyboardH:
+    icon: {fileID: 0}
+  keyboardJ:
+    icon: {fileID: 0}
+  keyboardK:
+    icon: {fileID: 0}
+  keyboardL:
+    icon: {fileID: 0}
+  keyboardM:
+    icon: {fileID: 0}
+  keyboardW:
+    icon: {fileID: 0}
+  keyboardX:
+    icon: {fileID: 0}
+  keyboardC:
+    icon: {fileID: 0}
+  keyboardV:
+    icon: {fileID: 0}
+  keyboardB:
+    icon: {fileID: 0}
+  keyboardN:
+    icon: {fileID: 0}
+  keyboardArrowLeft:
+    icon: {fileID: 0}
+  keyboardArrowUp:
+    icon: {fileID: 0}
+  keyboardArrowRight:
+    icon: {fileID: 0}
+  keyboardArrowDown:
+    icon: {fileID: 0}
+  keyboardSpace:
+    icon: {fileID: 0}
+  keyboardTab:
+    icon: {fileID: 0}
+  keyboardEnter:
+    icon: {fileID: 0}
+  keyboardMajLeft:
+    icon: {fileID: 0}
+  keyboardMajRight:
+    icon: {fileID: 0}
+  keyboardCtrlLeft:
+    icon: {fileID: 0}
+  keyboardCtrlRight:
+    icon: {fileID: 0}
+  keyboardAltLeft:
+    icon: {fileID: 0}
+  keyboardAltRight:
+    icon: {fileID: 0}
+  keyboardEscape:
+    icon: {fileID: 0}

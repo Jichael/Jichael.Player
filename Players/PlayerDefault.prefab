@@ -158,6 +158,18 @@ MonoBehaviour:
   characterController: {fileID: 3273135485149847798}
   virtualCamera: {fileID: 3273135484465362754}
   isDefaultPlayerInScene: 1
+  normalMode:
+    lockedCursor: 0
+    lockedMovement: 0
+    lockedRotation: 0
+    locked3DInteraction: 0
+    lockedUIInteraction: 0
+  uiMode:
+    lockedCursor: 0
+    lockedMovement: 0
+    lockedRotation: 0
+    locked3DInteraction: 0
+    lockedUIInteraction: 0
   settings:
     clampRotationX: 1
     minRotationX: -80
@@ -175,14 +187,11 @@ MonoBehaviour:
     limitMovementZ: 0
     zAxisBounds: {x: 0, y: 0}
     movementSpeedMultiplier: 4
+    sprintMultiplier: 1.5
     rotationSpeedMultiplier: 1
-    lockedCursor: 1
     raycastLength: 2
   onPlayerEnterEvents: []
   onPlayerExitEvents: []
-  lockedMovement: 0
-  lockedRotation: 0
-  lockedInteractions: 0
 --- !u!143 &3273135485149847798
 CharacterController:
   m_ObjectHideFlags: 0
@@ -194,8 +203,8 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.7
+  m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
