@@ -63,7 +63,7 @@ namespace CustomPackages.Silicom.Player.Players
 
         private void OnDestroy()
         {
-            CursorManager.Instance.OnLockStateChanged -= OnLockStateChanged;
+            if(CursorManager.Instance) CursorManager.Instance.OnLockStateChanged -= OnLockStateChanged;
         }
 
         private void OnLockStateChanged(bool lockState)

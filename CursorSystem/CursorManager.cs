@@ -34,22 +34,28 @@ namespace CustomPackages.Silicom.Player.CursorSystem
 
         private void Awake()
         {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
             Instance = this;
             Cursor.visible = false;
 
-            SetCursorNoHide(defaultCursorInfo);
+            defaultCursor.HideCursor();
             zoomCursor.HideCursor();
             handCursor.HideCursor();
             informationCursor.HideCursor();
             fixedCursor.HideCursor();
             textCursor.HideCursor();
             unzoomCursor.HideCursor();
+            SetCursorNoHide(defaultCursorInfo);
             SetLockState(false);
         }
 
         private void OnDestroy()
         {
-            Instance = null;
+            if(Instance == this) Instance = null;
         }
 
         public void SetCursorPosition(Vector3 position)
